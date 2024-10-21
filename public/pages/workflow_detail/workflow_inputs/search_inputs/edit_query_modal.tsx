@@ -45,13 +45,14 @@ export function EditQueryModal(props: EditQueryModalProps) {
     <EuiModal
       onClose={() => props.setModalOpen(false)}
       style={{ width: '70vw' }}
+      data-testid="editQueryModal"
     >
       <EuiModalHeader>
         <EuiModalHeaderTitle>
           <p>{`Edit query`}</p>
         </EuiModalHeaderTitle>
       </EuiModalHeader>
-      <EuiModalBody>
+      <EuiModalBody data-testid="editQueryModalBody">
         <EuiPopover
           button={
             <EuiSmallButton

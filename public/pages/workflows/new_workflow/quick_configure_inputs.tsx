@@ -159,6 +159,7 @@ export function QuickConfigureInputs(props: QuickConfigureInputsProps) {
             id="optionalConfiguration"
             buttonContent="Optional configuration"
             initialIsOpen={false}
+            data-testid="optionalConfigurationButton"
           >
             <EuiSpacer size="m" />
             <EuiCompressedFormRow
@@ -180,6 +181,7 @@ export function QuickConfigureInputs(props: QuickConfigureInputsProps) {
               }
             >
               <EuiCompressedSuperSelect
+                data-testid="selectDeployedModel"
                 fullWidth={true}
                 options={deployedModels.map(
                   (option) =>
@@ -228,6 +230,7 @@ export function QuickConfigureInputs(props: QuickConfigureInputsProps) {
               }`}
             >
               <EuiCompressedFieldText
+                data-testid="textFieldQuickConfigure"
                 fullWidth={true}
                 value={fieldValues?.textField || ''}
                 onChange={(e) => {

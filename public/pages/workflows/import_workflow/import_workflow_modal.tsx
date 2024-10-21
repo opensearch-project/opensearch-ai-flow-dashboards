@@ -173,6 +173,7 @@ export function ImportWorkflowModal(props: ImportWorkflowModalProps) {
                 onModalClose();
               });
           }}
+          data-testid="importJSONButton"
           fill={true}
           color="primary"
         >
