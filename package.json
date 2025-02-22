@@ -1,6 +1,6 @@
 {
   "name": "dashboards-flow-framework",
-  "version": "2.19.0.0",
+  "version": "2.20.0.0",
   "description": "OpenSearch Flow Framework Dashboards Plugin",
   "main": "index.js",
   "config": {
