@@ -29,7 +29,7 @@ interface JsonFieldProps {
  * in some custom JSON
  */
 export function JsonField(props: JsonFieldProps) {
-  const validate = props.validate !== undefined ? props.validate : true;
+  const validate = props.validate ?? true;
 
   const { errors, touched, values } = useFormikContext<WorkflowFormValues>();
 

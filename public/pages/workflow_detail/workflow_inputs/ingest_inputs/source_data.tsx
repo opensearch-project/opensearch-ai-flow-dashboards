@@ -44,7 +44,8 @@ export function SourceData(props: SourceDataProps) {
   // empty/populated docs state
   let docs = [];
   try {
-    docs = JSON.parse(getIn(values, 'ingest.docs', []));
+    const lines = getIn(values, 'ingest.docs', '').split('\n') as string[];
+    lines.forEach((line) => docs.push(JSON.parse(line)));
   } catch {}
   const docsPopulated = docs.length > 0;
 

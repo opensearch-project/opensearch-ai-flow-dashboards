@@ -40,6 +40,10 @@ export function customStringify(jsonObj: {} | []): string {
   return JSON.stringify(jsonObj, undefined, 2);
 }
 
+export function customStringifySingleLine(jsonObj: {}): string {
+  return JSON.stringify(jsonObj, undefined, 0);
+}
+
 export function isVectorSearchUseCase(workflow: Workflow | undefined): boolean {
   return (
     workflow?.ui_metadata?.type !== undefined &&

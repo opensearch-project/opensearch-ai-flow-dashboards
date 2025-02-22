@@ -44,7 +44,8 @@ export function formikToPartialPipeline(
         return !isEmpty(precedingProcessors)
           ? ({
               processors: processorConfigsToTemplateProcessors(
-                precedingProcessors
+                precedingProcessors,
+                context
               ),
             } as IngestPipelineConfig)
           : undefined;
@@ -60,7 +61,8 @@ export function formikToPartialPipeline(
         return !isEmpty(precedingProcessors)
           ? ({
               request_processors: processorConfigsToTemplateProcessors(
-                precedingProcessors
+                precedingProcessors,
+                context
               ),
             } as SearchPipelineConfig)
           : undefined;
@@ -78,10 +80,12 @@ export function formikToPartialPipeline(
         return !isEmpty(precedingProcessors) || !isEmpty(requestProcessors)
           ? ({
               request_processors: processorConfigsToTemplateProcessors(
-                requestProcessors
+                requestProcessors,
+                context
               ),
               response_processors: processorConfigsToTemplateProcessors(
-                precedingProcessors
+                precedingProcessors,
+                context
               ),
             } as SearchPipelineConfig)
           : undefined;

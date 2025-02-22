@@ -46,7 +46,7 @@ function ingestConfigToFormik(
     ingestFormikValues['pipelineName'] =
       ingestConfig.pipelineName.value ||
       getInitialValue(ingestConfig.pipelineName.type);
-    ingestFormikValues['docs'] = ingestDocs || getInitialValue('jsonArray');
+    ingestFormikValues['docs'] = ingestDocs || getInitialValue('jsonLines');
     ingestFormikValues['enrich'] = processorsConfigToFormik(
       ingestConfig.enrich
     );
@@ -124,10 +124,9 @@ function searchIndexConfigToFormik(
 // Helper fn to get an initial value based on the field type
 export function getInitialValue(fieldType: ConfigFieldType): ConfigFieldValue {
   switch (fieldType) {
-    case 'string': {
-      return '';
-    }
-    case 'select': {
+    case 'string':
+    case 'select':
+    case 'jsonLines': {
       return '';
     }
     case 'model': {

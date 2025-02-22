@@ -30,6 +30,7 @@ export type ConfigFieldType =
   | 'json'
   | 'jsonArray'
   | 'jsonString'
+  | 'jsonLines'
   | 'select'
   | 'model'
   | 'map'

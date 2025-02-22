@@ -266,6 +266,7 @@ export const ML_RESPONSE_PROCESSOR_EXAMPLE_DOCS_LINK =
   'https://opensearch.org/docs/latest/search-plugins/search-pipelines/ml-inference-search-response/#example-externally-hosted-text-embedding-model';
 export const UPDATE_MODEL_DOCS_LINK =
   'https://opensearch.org/docs/latest/ml-commons-plugin/api/model-apis/update-model/';
+export const JSONLINES_LINK = 'https://jsonlines.org/';
 
 // Large Language Models Documentation Links
 export const BEDROCK_CLAUDE_3_SONNET_DOCS_LINK =

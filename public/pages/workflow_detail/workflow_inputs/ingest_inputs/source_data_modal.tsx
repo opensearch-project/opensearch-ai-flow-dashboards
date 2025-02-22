@@ -21,15 +21,17 @@ import {
   EuiSmallButtonEmpty,
   EuiButtonGroup,
   EuiCompressedComboBox,
+  EuiLink,
 } from '@elastic/eui';
-import { JsonField } from '../input_fields';
+import { JsonLinesField } from '../input_fields';
 import {
-  customStringify,
+  customStringifySingleLine,
   FETCH_ALL_QUERY_LARGE,
   IConfigField,
   IndexMappings,
   IngestDocsFormValues,
   isVectorSearchUseCase,
+  JSONLINES_LINK,
   MAX_BYTES_FORMATTED,
   MAX_DOCS_TO_IMPORT,
   SearchHit,
@@ -72,11 +74,11 @@ export function SourceDataModal(props: SourceDataProps) {
 
   // sub-form values/schema
   const docsFormValues = {
-    docs: getInitialValue('jsonArray'),
+    docs: getInitialValue('jsonLines'),
   } as IngestDocsFormValues;
   const docsFormSchema = yup.object({
     docs: getFieldSchema({
-      type: 'jsonArray',
+      type: 'jsonLines',
     } as IConfigField),
   }) as yup.Schema;
 
@@ -177,8 +179,14 @@ export function SourceDataModal(props: SourceDataProps) {
               .then((resp) => {
                 const docObjs = resp?.hits?.hits
                   ?.slice(0, MAX_DOCS_TO_IMPORT)
-                  ?.map((hit: SearchHit) => hit?._source);
-                formikProps.setFieldValue('docs', customStringify(docObjs));
+                  ?.map((hit: SearchHit) => hit?._source) as {}[];
+                let jsonLinesStr = '';
+                try {
+                  docObjs.forEach((docObj) => {
+                    jsonLinesStr += customStringifySingleLine(docObj) + '\n';
+                  });
+                } catch {}
+                formikProps.setFieldValue('docs', jsonLinesStr);
               });
           }
         }, [selectedIndex]);
@@ -234,7 +242,7 @@ export function SourceDataModal(props: SourceDataProps) {
                 {props.selectedOption === SOURCE_OPTIONS.UPLOAD && (
                   <>
                     <EuiCompressedFilePicker
-                      accept="application/json"
+                      accept=".jsonl"
                       multiple={false}
                       initialPromptText="Upload file"
                       onChange={(files) => {
@@ -247,6 +255,7 @@ export function SourceDataModal(props: SourceDataProps) {
                                 'docs',
                                 e.target.result as string
                               );
+                              formikProps.setFieldTouched('docs');
                             }
                           };
                           fileReader.readAsText(files[0]);
@@ -286,12 +295,20 @@ export function SourceDataModal(props: SourceDataProps) {
                     <EuiSpacer size="xs" />
                   </>
                 )}
-                <JsonField
+                <JsonLinesField
                   label="Documents to be imported"
                   fieldPath={'docs'}
-                  helpText="Documents must be in a JSON array format."
+                  helpText={
+                    <EuiText size="s">
+                      Documents must be in JSON lines format.{' '}
+                      <EuiLink href={JSONLINES_LINK} target="_blank">
+                        Learn more
+                      </EuiLink>
+                    </EuiText>
+                  }
                   editorHeight="40vh"
                   readOnly={false}
+                  validate={true}
                 />
               </>
             </EuiModalBody>

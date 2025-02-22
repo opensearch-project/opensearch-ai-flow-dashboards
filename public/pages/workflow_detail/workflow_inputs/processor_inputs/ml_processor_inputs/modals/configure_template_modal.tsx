@@ -149,7 +149,8 @@ export function ConfigureTemplateModal(props: ConfigureTemplateModalProps) {
   const docs = getIn(values, 'ingest.docs');
   let docObjs = [] as {}[] | undefined;
   try {
-    docObjs = JSON.parse(docs);
+    const lines = docs?.split('\n') as string[];
+    lines.forEach((line) => docObjs?.push(JSON.parse(line)));
   } catch {}
   const query = getIn(values, 'search.request');
   let queryObj = {} as {} | undefined;

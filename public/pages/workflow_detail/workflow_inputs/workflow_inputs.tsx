@@ -275,8 +275,9 @@ export function WorkflowInputs(props: WorkflowInputsProps) {
   useEffect(() => {
     let parsedDocsObjs = [] as {}[];
     try {
-      parsedDocsObjs = JSON.parse(props.ingestDocs);
-    } catch (e) {}
+      const lines = props.ingestDocs?.split('\n') as string[];
+      lines.forEach((line) => parsedDocsObjs.push(JSON.parse(line)));
+    } catch {}
     setDocsPopulated(parsedDocsObjs.length > 0 && !isEmpty(parsedDocsObjs[0]));
   }, [props.ingestDocs]);
 
@@ -607,7 +608,8 @@ export function WorkflowInputs(props: WorkflowInputsProps) {
     try {
       let ingestDocsObjs = [] as {}[];
       try {
-        ingestDocsObjs = JSON.parse(props.ingestDocs);
+        const lines = props.ingestDocs?.split('\n') as string[];
+        lines.forEach((line) => ingestDocsObjs.push(JSON.parse(line)));
       } catch (e) {}
       if (ingestDocsObjs.length > 0 && !isEmpty(ingestDocsObjs[0])) {
         success = await validateAndUpdateWorkflow(false, true, false);

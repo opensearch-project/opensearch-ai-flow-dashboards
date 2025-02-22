@@ -47,7 +47,7 @@ function ingestConfigToSchema(
   const ingestSchemaObj = {} as { [key: string]: Schema };
   if (ingestConfig?.enabled) {
     ingestSchemaObj['docs'] = getFieldSchema({
-      type: 'jsonArray',
+      type: 'jsonLines',
     } as IConfigField);
     ingestSchemaObj['pipelineName'] = getFieldSchema(ingestConfig.pipelineName);
     ingestSchemaObj['enrich'] = processorsConfigToSchema(ingestConfig.enrich);
@@ -209,6 +209,40 @@ export function getFieldSchema(
         )
         .test(
           'jsonArray',
+          `The data size exceeds the limit of ${MAX_BYTES} bytes`,
+          (value) => {
+            try {
+              // @ts-ignore
+              return new TextEncoder().encode(value)?.length < MAX_BYTES;
+            } catch (error) {
+              return false;
+            }
+          }
+        );
+      break;
+    }
+    case 'jsonLines': {
+      baseSchema = yup
+        .string()
+        .test('jsonLines', 'Invalid JSON lines format', (value) => {
+          let isValid = true;
+          try {
+            value?.split('\n').forEach((line: string) => {
+              if (line.trim() !== '') {
+                try {
+                  JSON.parse(line);
+                } catch (e) {
+                  isValid = false;
+                }
+              }
+            });
+          } catch (error) {
+            isValid = false;
+          }
+          return isValid;
+        })
+        .test(
+          'jsonLines',
           `The data size exceeds the limit of ${MAX_BYTES} bytes`,
           (value) => {
             try {

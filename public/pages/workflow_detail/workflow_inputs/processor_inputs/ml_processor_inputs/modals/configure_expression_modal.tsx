@@ -123,7 +123,8 @@ export function ConfigureExpressionModal(props: ConfigureExpressionModalProps) {
   const docs = getIn(values, 'ingest.docs');
   let docObjs = [] as {}[] | undefined;
   try {
-    docObjs = JSON.parse(docs);
+    const lines = docs?.split('\n') as string[];
+    lines.forEach((line) => docObjs?.push(JSON.parse(line)));
   } catch {}
   const query = getIn(values, 'search.request');
   let queryObj = {} as {} | undefined;
@@ -465,9 +466,13 @@ export function ConfigureExpressionModal(props: ConfigureExpressionModalProps) {
                                       });
                                   } else {
                                     try {
-                                      const docObjs = JSON.parse(
-                                        values.ingest.docs
-                                      ) as {}[];
+                                      const docObjs = [] as {}[];
+                                      const lines = values?.ingest?.docs?.split(
+                                        '\n'
+                                      ) as string[];
+                                      lines.forEach((line) =>
+                                        docObjs?.push(JSON.parse(line))
+                                      );
                                       if (docObjs.length > 0) {
                                         setSourceInput(
                                           customStringify(docObjs[0])
